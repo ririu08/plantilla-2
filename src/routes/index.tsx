@@ -179,7 +179,7 @@ function Landing() {
             <div className="aspect-[4/3] w-full">
               <iframe
                 title="Ubicación AquaDental"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=-3.7100%2C40.4150%2C-3.6900%2C40.4250&layer=mapnik&marker=40.4200%2C-3.7000"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=-6.0150%2C37.3750%2C-5.9550%2C37.4050&layer=mapnik&marker=37.3891%2C-5.9845"
                 className="w-full h-full border-0"
                 loading="lazy"
               />
@@ -234,21 +234,37 @@ function Landing() {
               </div>
             </div>
           </div>
+          
+          <form onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            formData.append("access_key", "TU_ACCESS_KEY_AQUÍ"); // <--- Pon tu clave real de Web3Forms aquí
 
-          <form onSubmit={(e) => { e.preventDefault(); alert("Gracias, te contactaremos pronto."); }} className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] border border-border">
+            try {
+              const response = await fetch("https://api.web3forms.com/submit", {
+              method: "POST",
+              body: formData
+            });
+            const data = await response.json();
+            if (data.success) {
+            alert("¡Gracias, te contactaremos pronto!");
+            e.currentTarget.reset();
+            } else {
+              alert("Error: " + data.message);
+              }
+            } catch (error) {
+              alert("Error de conexión al enviar el formulario.");
+            }
+          }} className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] border border-border">
             <h3 className="text-2xl font-display font-medium">Pide tu cita</h3>
             <p className="text-sm text-muted-foreground mt-1">Primera visita gratuita</p>
             <div className="mt-6 grid gap-4">
               <div className="grid sm:grid-cols-2 gap-4">
-                <input required placeholder="Nombre" className="rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
-                <input required type="tel" placeholder="Teléfono" className="rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
+                <input required name="name" placeholder="Nombre" className="rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
+                <input required type="tel" name="phone" placeholder="Teléfono" className="rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
               </div>
-              <input type="email" placeholder="Email" className="rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
-              <select className="rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40">
-                <option>Tipo de tratamiento</option>
-                {services.map(s => <option key={s.title}>{s.title}</option>)}
-              </select>
-              <textarea rows={4} placeholder="¿En qué podemos ayudarte?" className="rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
+              <input type="email" name="email" required placeholder="Email" className="rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
+              <textarea rows={4} name="message" placeholder="¿En qué podemos ayudarte?" className="rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
               <button type="submit" className="rounded-full bg-primary text-primary-foreground py-3.5 text-sm font-semibold shadow-[var(--shadow-soft)] hover:opacity-90 transition inline-flex items-center justify-center gap-2">
                 Enviar solicitud <ArrowRight className="size-4" />
               </button>
