@@ -235,7 +235,9 @@ function Landing() {
             </div>
           </div>
           
-          <form onSubmit={async (e) => {
+            <img src={smileImg} alt="Prueba"/>
+          
+          {/*<form onSubmit={async (e) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
             formData.append("access_key", "TU_ACCESS_KEY_AQUÍ"); // <--- Pon tu clave real de Web3Forms aquí
@@ -269,7 +271,7 @@ function Landing() {
                 Enviar solicitud <ArrowRight className="size-4" />
               </button>
             </div>
-          </form>
+          </form>*/}
         </div>
       </section>
 
